@@ -9,12 +9,11 @@
                         Crear Etiqueta                    
                     </div>
                 
-
                     <div class="panel-body">
                         {!! Form::open(['route' => 'tags.store']) !!}          
                             
                             @include('admin.tags.partials.form')
-                            
+
                         {!! Form::close() !!}
                     </div>
                 </div>
