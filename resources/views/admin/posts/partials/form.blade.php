@@ -30,9 +30,9 @@
     {{ Form::label('tags', 'Etiquetas') }}
     <div>
         @foreach($tags as $tag)
-            <label>
-                {{ Form::checkbox('tags[]', $tag->id) }} {{ $tag->name }}
-            </label>
+        <label>
+            {{ Form::checkbox('tags[]', $tag->id) }} {{ $tag->name }}
+        </label>
         @endforeach
     </div>
 </div>

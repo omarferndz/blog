@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Requests\PostUpdateRequest;
 
+use Illuminate\Support\Facades\Storage;
+
 use App\Http\Controllers\Controller;
 
 use App\Post;
@@ -55,6 +57,15 @@ class PostController extends Controller
     {
         $post = Post::create($request->all());
 
+        //IMAGE
+        if($request->file('file')){
+            $path = Storage::disk('public')->put('image', $request->file('file'));
+            $post->fill(['file' => asset($path)])->save();
+        }
+
+        //TAGS
+        $post->tags()->attach($request->get('tags'));
+
         return redirect()->route('posts.edit', $post->id)
             ->with('info', 'Entrada creada con exito');
     }
@@ -97,8 +108,16 @@ class PostController extends Controller
     public function update(PostUpdateRequest $request, $id)
     {
         $post = Post::find($id);
-
         $post->fill($request->all())->save();
+
+        //IMAGE
+        if($request->file('file')){
+            $path = Storage::disk('public')->put('image', $request->file('file'));
+            $post->fill(['file' => asset($path)])->save();
+        }
+
+        //TAGS
+        $post->tags()->sync($request->get('tags'));
 
         return redirect()->route('posts.edit', $post->id)
         ->with('info', 'Entrada actualizada con exito');
